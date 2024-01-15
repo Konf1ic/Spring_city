@@ -6,6 +6,9 @@
 </head>
 
 <body>
+<div th:each="item : ${listErr}">
+    <h2 style="color: red" th:text="${item.getDefaultMessage()}"></h2>
+</div>
 <p>
     <a th:href="@{/city}">
         Back to list city

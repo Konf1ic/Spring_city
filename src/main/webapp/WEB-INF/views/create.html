@@ -5,10 +5,13 @@
     <title>Thêm thành phố</title>
 </head>
 <body>
+<div th:each="item : ${listErr}">
+    <h2 style="color: red" th:text="${item.getDefaultMessage()}"></h2>
+</div>
 <h1>Thêm thành phố</h1>
 <p>
     <a th:href="@{/city}">
-        Back to list city
+        Back to city list
     </a>
 </p>
 </center>
@@ -21,7 +24,10 @@
         </div>
         <div>
             <label>Quốc gia: </label>
-            <input type="text" th:field="*{nameCountry}">
+            <select>
+                <option th:each="categoryC : ${category}" th:text="${categoryC.name}" th:value="${categoryC.name}"
+                        th:field="*{nameCountry}"></option>
+            </select>
         </div>
         <div>
             <label>Diện tích: </label>

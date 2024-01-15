@@ -1,14 +1,19 @@
 package com.example.formcity.controller;
 
 import com.example.formcity.model.City;
+import com.example.formcity.repository.ICategoryRepository;
 import com.example.formcity.service.ICityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.naming.Binding;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/city")
@@ -16,6 +21,8 @@ public class CityController {
 
     @Autowired
     ICityService iCityService;
+    @Autowired
+    ICategoryRepository iCategoryRepository;
 
     @GetMapping
     public ModelAndView listCity(){
@@ -39,7 +46,12 @@ public class CityController {
     }
 
     @PostMapping("/save")
-    public ModelAndView create(City city){
+    public ModelAndView create(@Valid City city, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            ModelAndView modelAndView = new ModelAndView("/create");
+            modelAndView.addObject("listErr", bindingResult.getAllErrors());
+            return modelAndView;
+        }
         ModelAndView modelAndView = new ModelAndView("redirect:/city");
         iCityService.save(city);
         return modelAndView;
@@ -53,7 +65,12 @@ public class CityController {
     }
 
     @PostMapping("/edit")
-    public ModelAndView update( City city) {
+    public ModelAndView update(@Valid City city, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            ModelAndView modelAndView = new ModelAndView("/edit");
+            modelAndView.addObject("lisErrEdit", bindingResult.getAllErrors());
+            return modelAndView;
+        }
         ModelAndView modelAndView = new ModelAndView("redirect:/city");
         iCityService.save(city);
         return modelAndView;
